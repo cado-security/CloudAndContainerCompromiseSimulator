@@ -5,12 +5,13 @@ CloudAndContainerCompromiseSimulator
 This can be used an easy way of simulating a cloud and container compromise - to trigger detections
 
 It is inspired by Florian Roth's [APTSimulator](https://github.com/NextronSystems/APTSimulator)
+
 Do not run this on production systems as it can reduce their security
 
 # How to Run
 Copy the files to a Linux system and run:
-chmod +x ./setup.sh
-./setup.sh
+(chmod +x ./setup.sh
+* ./setup.sh
 
 # Tools Deployed
 * [go-pillage-registries - nccgroup - MIT License](https://github.com/nccgroup/go-pillage-registries)
