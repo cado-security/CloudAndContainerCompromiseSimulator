@@ -10,7 +10,7 @@ Do not run this on production systems as it can reduce their security
 
 # How to Run
 Copy the files to a Linux system and run:
-(chmod +x ./setup.sh
+* chmod +x ./setup.sh
 * ./setup.sh
 
 # Tools Deployed
