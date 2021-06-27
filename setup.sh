@@ -78,7 +78,7 @@ timeout 60 /tmp/bins/aws_dump.sh > /tmp/aws_dump.txt
 echo Running go-pillage-registries
 timeout 60 /tmp/bins/.pilreg 127.0.0.1:5000 > /tmp/pillreg.txt
 
-echo Executung peirates in interactive mode
+echo Executing peirates in interactive mode
 /tmp/bins/peirates
 
 echo = Running Classic Mining Worm Capabilities =
