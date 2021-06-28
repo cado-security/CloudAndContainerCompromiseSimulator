@@ -1,0 +1,212 @@
+/*
+
+ A rule-set for tools commonly seen in cloud and container intrusions
+
+*/
+
+
+rule cloud_mining_worm {
+
+   meta:
+
+      description = "Detects Common Cloud Mining Worms"
+      author = "cdoman@cadosecurity.com"
+      date = "2020-08-16"
+      license = "Apache License 2.0"
+      hash1 = "3a377e5baf2c7095db1d7577339e4eb847ded2bfec1c176251e8b8b0b76d393f"
+      hash2 = "929c3017e6391b92b2fbce654cf7f8b0d3d222f96b5b20385059b584975a298b"
+      hash3 = "705a22f0266c382c846ee37b8cd544db1ff19980b8a627a4a4f01c1161a71cb0"
+
+   strings:
+
+      $a = "echo $LOCKFILE | base64 -d > $tmpxmrigfile" wide ascii
+      $b = "/root/.tmp/xmrig –config=/root/.tmp/" wide ascii
+      $c = "if [ -s /usr/bin/curl ]; then" wide ascii
+      $d = "echo ‘found: /root/.aws/credentials'" wide ascii
+      $e = "function KILLMININGSERVICES(){" wide ascii
+      $g = "touch /root/.ssh/authorized_keys 2>/dev/null 1>/dev/null" wide ascii
+      $h = "rm -rf /etc/init.d/agentwatch /usr/sbin/aliyun-service" wide ascii
+      $i = "userfile=@/root/.ssh/id_ed25519.pub" wide ascii
+      $j = "echo '0' >/proc/sys/kernel/nmi_watchdog" wide ascii
+      $k = "curl http://update.aegis.aliyun.com/download/uninstall.sh | bash" wide ascii
+      $l = "rm -f /var/tmp/kinsing" wide ascii
+
+   condition:
+      filesize < 500KB and any of them
+}
+
+rule cryptomining_malware_xmrig_config {
+   meta:
+      description = "Detects XMRig Config File"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "1085c9211f2af8ddf1588adfb150c64c2b3a2b1c7acf4bc445546455f36299c0"
+
+   strings:
+      $ = "\"cpu-affinity\"" nocase wide ascii
+      $ = "\"autosave\"" nocase wide ascii
+      $ = "\"log-file\"" nocase wide ascii
+      $ = "\"max-cpu-usage\"" nocase wide ascii
+      $ = "\"donate-level\"" nocase wide ascii
+      $ = "\"huge-pages\"" nocase wide ascii
+      $ = "\"cpu-priority\"" nocase wide ascii
+   condition:
+      filesize < 500KB and 5 of them
+}
+
+rule cryptomining_malware_xmrig {
+   meta:
+      description = "Detects XMRig"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "a34ae92c904b60ed7c1dc437493d1b086a828d25c52e5409d2c7b79b880db42f"
+
+   strings:
+      $ = "password for mining server" nocase wide ascii
+      $ = "threads count to initialize RandomX dataset" nocase wide ascii
+      $ = "display this help and exit" nocase wide ascii
+      $ = "maximum CPU threads count (in percentage) hint for autoconfig" nocase wide ascii
+      $ = "enable CUDA mining backend" nocase wide ascii
+      $ = "cryptonight" nocase wide ascii
+   condition:
+      5 of them
+}
+
+rule pentest_tool_peirates {
+   meta:
+      description = "Detects Peirates"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "a0418d568cfe788fe3d2d0558d70fb6d0e7769a2314c58ca04b57cc3225fe532"
+
+   strings:
+      $ = "/var/run/secrets/kubernetes.io/serviceaccount/" nocase wide ascii
+      $ = "List of comma-seperated Pods" nocase wide ascii
+      $ = "github.com/aws/aws-sdk-go/service/s3" nocase wide ascii
+      $ = "S3).ListBucketsRequest" nocase wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_kubeletmein {
+   meta:
+      description = "Detects kubeletmein"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "112709845dc4ba4edd55747b871542f98ab0307fc8b812fffd5c2a7c3b0801f7"
+
+   strings:
+      $ = "github.com/4armed/kubeletmein" nocase wide ascii
+      $ = "unable to write kubeconfig file" nocase wide ascii
+      $ = "now try: kubectl --kubeconfig" nocase wide ascii
+      $ = "EC2Metadata request" nocase wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_dopwn {
+   meta:
+      description = "Detects dopwn"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "6fae4c6c34478fb515b8510d14071fc955a13e6bfb93121220342fec866317d1"
+
+   strings:
+      $ = "grab the digitalocean secret and take over the DO account too" nocase wide ascii
+      $ = "registry/clusterrolebindings" nocase wide ascii
+      $ = "k8s-ca-cert" nocase wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_deepce {
+   meta:
+      description = "Detects DeepCE"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = ""
+
+   strings:
+      $ = "should be used for authorized penetration testing" nocase wide ascii
+      $ = "Docker Enumeration, Escalation of Privileges and Container Escapes" nocase wide ascii
+      $ = "Are we inside kubenetes?" nocase wide ascii
+      $ = "ip route get 1 | head -1" nocase wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_botb {
+   meta:
+      description = "Detects Break Out The Box"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "3aae4a2bf41aedaa3b12a2a97398fa89a9818b4bec433c20b4e724505277af83"
+
+   strings:
+      $ = "github.com/brompwnie/botb" wide ascii
+      $ = "/Users/cleroy/go/src" wide ascii
+      $ = "Data uploaded to" wide ascii
+      $ = "Break Out The Box" wide ascii
+   condition:
+      all of them
+}
+
+rule suspicious_cloud_credentials {
+   meta:
+      description = "Detects file containing a number of cloud credentials"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "b58cf43cb4b000cb63334a8e20ca53e0112037daa178062c876a395092e1d8ca"
+
+   strings:
+      $ = ".aws/credentials" nocase wide ascii
+      $ = ".config/gcloud/access_tokens.db" nocase wide ascii
+      $ = ".azure/credentials" nocase wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_amicontained {
+   meta:
+      description = "Detects amicontained"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = "d8c49e2cf44ee9668219acd092ed961fc1aa420a6e036e0822d7a31033776c9f"
+
+   strings:
+      $ = "github.com/genuinetools/amicontained" wide ascii
+      $ = "CFeDIY4Rq5cFO8K/uqDblHUxjlzOmjFpvRg=" wide ascii
+      $ = "cpu.processOptions" wide ascii
+      $ = "runtime.sendDirect" wide ascii
+   condition:
+      all of them
+}
+
+rule pentest_tool_pillreg {
+   meta:
+      description = "Detects go-pillage-registries"
+      author = "cdoman@cadosecurity.com"
+      date = "2021-06-28"
+      license = "Apache License 2.0"
+      hash1 = ""
+
+   strings:
+      $ = "pillage.ImageData" nocase wide ascii
+      $ = "pillage.StorageOptions" nocase wide ascii
+      $ = "go-pillage-registries" nocase wide ascii
+      $ = "pillage.EnumRegistry" nocase wide ascii
+   condition:
+      all of them
+}
+
+
+
