@@ -1,5 +1,4 @@
 
-CloudAndContainerCompromiseSimulator
 
 # Background
 This can be used an easy way of simulating a cloud and container compromise - to trigger detections
