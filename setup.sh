@@ -2,7 +2,7 @@
 #
 # CloudAndContainerCompromiseSimulator
 # 
-# This can be used an easy way of triggering detections for cloud and continer compromise
+# This can be used an easy way of triggering detections for cloud and container compromise scenarios
 # Do not run this on production systems
 #
 #
