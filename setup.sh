@@ -126,12 +126,10 @@ chattr -iae /root/.ssh/authorized_keys
 echo Download Aliyun Agent Uninstaller
 curl http://update.aegis.aliyun.com/download/uninstall.sh
 
-
-
 echo Search for Monero Docker images
 docker images -a | grep "auto"
 
-echo Create backup (invalid) ssh account
+echo Create backup invalid ssh account
 mkdir /home/temp_user/.ssh/ -p
 echo "" > /home/temp_user/.ssh/authorized_keys  
 chmod 600 /home/temp_user/.ssh/authorized_keys
