@@ -5,7 +5,7 @@ This can be used an easy way of simulating a cloud and container compromise - to
 
 It is inspired by Florian Roth's [APTSimulator](https://github.com/NextronSystems/APTSimulator)
 
-Do not run this on production systems as it can reduce their security
+This allows you to trigger detections without running real world malware. Still, do not run this on production systems as it can reduce their security.
 
 # How to Run
 Copy the files to a Linux system and run:
