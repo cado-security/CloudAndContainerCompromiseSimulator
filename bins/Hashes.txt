@@ -1,0 +1,9 @@
+8a29cf661c2ddb9d21381c5097669730ee716fc2  amicontained https://github.com/genuinetools/amicontained/releases/download/v0.4.9/amicontained-linux-amd64
+4895539918825191ad82abc62abc898d3accba18  aws_dump.sh
+9836050109088858a0ca15962ee76428d03ab5d3  botb https://github.com/brompwnie/botb/releases/download/1.8.0/botb-linux-amd64
+c70beda1f98db6b72b68c68fa4db41a876ecd573  config.json
+21eccf43c6df17969c53ae26e4eced72de85469c  deepce.sh
+cd071160668d0ca6506bf3327ca0d2af6db4cd27  dopwn https://github.com/4ARMED/dopwn/releases/download/v0.1.0/dopwn_0.1.0_linux_amd64
+d218bdefb4f8a6a7074b5f2d62784f73ac508223  kubeletmein https://github.com/4ARMED/kubeletmein/releases/download/v1.0.2/kubeletmein_1.0.2_linux_amd64
+d06e5f452518cd50b84d57606956f50f4f92c5ca  peirates https://github.com/inguardians/peirates/releases/tag/v1.0.32
+001bad6f3e2fdea47b906c83c192fd576e7b75b0  xmrig https://github.com/xmrig/xmrig/releases/download/v6.12.2/xmrig-6.12.2-linux-x64.tar.gz
