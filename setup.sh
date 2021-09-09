@@ -52,7 +52,7 @@ echo = Running Cloud and Container Pen-Test Tools =
 
 echo Copying Binaries to /tmp for Execution
 mkdir /tmp/bins 2>/dev/null
-cp ./bins/* /tmp/bins 2>/dev/null
+cp -r ./bins/ /tmp/bins 2>/dev/null
 chmod +x /tmp/bins/*
 
 echo Running Break Out The Box
@@ -77,6 +77,7 @@ echo Running AWS Dump
 timeout -s SIGKILL 60 /tmp/bins/aws_dump.sh > /tmp/aws_dump.txt
 
 echo Running go-pillage-registries
+chmod +x /tmp/bins/.pilreg
 timeout -s SIGKILL 60 /tmp/bins/.pilreg 127.0.0.1:5000 > /tmp/pillreg.txt
 
 echo Executing peirates in interactive mode
