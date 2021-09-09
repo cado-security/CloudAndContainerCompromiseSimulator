@@ -12,6 +12,13 @@ Copy the files to a Linux system and run:
 * chmod +x ./setup.sh
 * ./setup.sh
 
+You can also clone the repository directly, for example you can run on Amazon Linux like this:
+* sudo yum install git
+* git clone https://github.com/cado-security/CloudAndContainerCompromiseSimulator.git
+* cd CloudAndContainerCompromiseSimulator
+* chmod +x ./setup.sh
+* sudo ./setup.sh
+
 ![Screenshot](https://github.com/cado-security/CloudAndContainerCompromiseSimulator/blob/main/Screenshot.png)
 
 # Tools Deployed
