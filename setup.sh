@@ -32,7 +32,7 @@ fi
 
 if [ -n "$(command -v yum)" ]; then
     yum update -y
-    amazon-linux-extras install docker
+    amazon-linux-extras install docker -y
     yum install -y docker
     service docker start
 fi
