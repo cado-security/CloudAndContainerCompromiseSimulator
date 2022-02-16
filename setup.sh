@@ -17,10 +17,12 @@ echo = `date` - Setting Up =
 
 echo Wiping Bash History, before starting execution
 # https://github.com/uber-common/metta/blob/master/MITRE/Defense_Evasion/defenseevasion_linux_unset_histfile.yml
-unset HISTFILE
 rm ~/.bash_history 2>/dev/null
 cat /dev/null > ~/.bash_history 2>/dev/null
 history -c
+echo "killall -9 kinsing" >> /root/.bash_history
+echo "sysctl -w vm.nr_hugepages=128" >> /root/.bash_history
+echo "git clone https://github.com/xmrig/xmrig.git" >> /root/.bash_history
 
 echo Setting fake AWS Credentials to be stolen later
 mkdir /root/.aws 2>/dev/null
@@ -59,6 +61,7 @@ echo Installing Docker
 if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
    apt-get update
    apt-get -y install docker.io
+   apt-get -y install crontab
    service docker start
 fi
 
@@ -66,6 +69,7 @@ if [ -n "$(command -v yum)" ]; then
     yum update -y
     amazon-linux-extras install docker -y
     yum install -y docker
+    yum install -y crontab
     service docker start
 fi
 
