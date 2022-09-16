@@ -200,7 +200,7 @@ echo '0' >/proc/sys/kernel/nmi_watchdog  2>/dev/null
 echo '1' >/proc/sys/kernel/nmi_watchdog  2>/dev/null
 
 echo Running Stratum Protocol via XMRIG
-timeout -s SIGKILL 20 /tmp/bins/xmrig
+timeout -s SIGKILL 300 /tmp/bins/xmrig
 
 
 
