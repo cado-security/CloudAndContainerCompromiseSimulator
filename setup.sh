@@ -79,7 +79,7 @@ if [ -n "$(command -v yum)" ]; then
     yum update -y
     amazon-linux-extras install docker -y
     yum install -y docker
-    yum install -y crontab
+    yum install -y cronie
     service docker start
 fi
 
@@ -98,7 +98,7 @@ echo = Running Cloud and Container Pen-Test Tools =
 
 echo Copying Binaries to /tmp for Execution
 mkdir /tmp/bins 2>/dev/null
-cp -r ./bins/ /tmp/bins 2>/dev/null
+cp -r ./bins/* /tmp/bins 2>/dev/null
 chmod +x /tmp/bins/*
 
 echo Hiding xmrig as a .log file...
